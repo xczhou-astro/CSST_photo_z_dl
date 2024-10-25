@@ -38,8 +38,8 @@ dataloader = DataProcess(data_type, mode='train', augmentation=True, aug_n=50, b
 ```  
 `data_type`: `str`: `'photometry'`, `'image'` or `'photometry_and_image'`, input data type  
 `mode`: `str`: `'train'`, `'evaluate'` or `'inference'`, working mode  
-`augmentation`: `bool`, Only work when `mode=='train'`, if use data augmentation  
-`aug_n` : `int`: Only work when `mode=='train'`, num augments for photometry data  
+`augmentation`: `bool`, Only work when `mode='train'`, if use data augmentation  
+`aug_n` : `int`: Only work when `mode='train'`, num augments for photometry data  
 `batch_size`: `int`, batch_size for tf dataset  
 
 ### Class methods for DataProcess
@@ -64,7 +64,7 @@ dataloader.load_images(images=None, imgnames=None)
 `imgnames`: `list`: a list of filenames for images in fits  
 Notes:  
 1. `images` overrides `imgnames`  
-2. Images will be regularized if imgnames are provided, thus cost more time.  
+2. Images will be regularized to shape `(32, 32, 7)` if imgnames are provided, thus cost more time.  
 
 ```Python
 dataloader.load_specz(specz=None, specz_key=None)
