@@ -200,8 +200,13 @@ estimator.get_model(datasize=datasize)
 estimator.train(train_dstfds, test_ds=test_tfds, learning_rate=2e-4, epochs=200)
 
 estimator.evaluate(test_tfds, test_tfds_specz, n_runs=200)
-```
-After running, weights file `BNN_models/Hybrid/Hybrid_weights.h5`, and calibration parameter file `BNN_models/alpha.json`, results file `BNN_models/Hybrid/result.npz`, and figures `BNN_models/Hybrid/loss.png`, `BNN_models/Hybrid/acc.png`, `BNN_models/Hybrid/results.png` will be saved.  
+```  
+Data products:  
+weights file `BNN_models/Hybrid/Hybrid_weights.h5`  
+calibration parameter file `BNN_models/alpha.json`  
+figure `BNN_models/Hybrid/loss.png`  
+figure `BNN_models/Hybrid/acc.png`  
+figure `BNN_models/Hybrid/results.png`  
 
 2. If one wants to inference from image data using trained BNN model
 ```Python
@@ -224,4 +229,5 @@ estimator.get_model(weights='Data/BNN/CNN_BNN_weights.h5', alpha_file='Data/BNN/
 
 estimator.inference(ds=tfds, datasize=datasize, catalogue=dataloader.catalogue_filename, info_keys=['ra', 'dec'], n_runs=200)
 ```  
-After running, a catalogue file `BNN_models/CNN/photoz_catalogue.fits` including `ra, dec, z_pred, z_err` will be created.
+Data products:  
+catalogue file `BNN_models/CNN/photoz_catalogue.fits` including `ra, dec, z_pred, z_err`  
