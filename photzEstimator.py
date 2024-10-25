@@ -189,6 +189,8 @@ class PhotzEstimator:
             z_pred = self.model.predict(ds)
             z_pred = z_pred.reshape(-1)
             self.plot_result(self, z_true, z_pred, savedir=self.data_dir)
+            np.savez_compressed(os.path.join(self.data_dir, 'result.npz'),
+                                z_true=z_true, z_pred=z_pred)
 
         elif self.model_type == 'BNN':
             
@@ -205,7 +207,9 @@ class PhotzEstimator:
 
             alpha = beta_calibration(z_true, z_pred_avg, z_pred_std)
             
-            alpha_file = os.path.join(self.data_dir, 'alpha.json')
+            if not os.path.exists('BNN_models'):
+                os.makedirs('BNN_models', exist_ok=True)
+            alpha_file = os.path.join('BNN_models', 'alpha.json')
             alpha = np.around(alpha, 3)
             self.alpha = alpha
             new_data = {f'{self.model_name}': f'{alpha}'}
@@ -213,6 +217,9 @@ class PhotzEstimator:
             
             z_pred_std_cal = z_pred_std * alpha
             self.plot_result(z_true, z_pred, z_err=z_pred_std_cal, savedir=self.data_dir)
+            np.savez_compressed(os.path.join(self.data_dir, 'result.npz'),
+                                z_true=z_true, z_pred=z_pred_avg,
+                                z_err=z_pred_std_cal, alpha=alpha)
         
         else:
             raise NotImplementedError
@@ -252,7 +259,7 @@ class PhotzEstimator:
         plt.title(f'{self.model_name}', fontsize=16)
         plt.xlabel(r'$z_{\rm true}$')
         plt.ylabel(r'$z_{\rm pred}$')
-        plt.savefig(os.path.join(savedir, 'evaluation_results.png'))
+        plt.savefig(os.path.join(savedir, 'results.png'))
 
     def create_catalogue(self, catalogue=None, z_pred=None, info_keys=['ra', 'dec'], z_err=None):
         if catalogue is not None:
@@ -300,7 +307,7 @@ class PhotzEstimator:
 
         hdulist = fits.HDUList([primary_hdu, table_hdu])
 
-        new_cat_name = f'photoz_by_{self.model_name}_in_{self.model_type}_framework_for_{self.data_type}.fits'
+        new_cat_name = f'photoz_catalogue.fits'
         catalogue_file = os.path.join(self.data_dir, new_cat_name)
         hdulist.writeto(catalogue_file, overwrite=True)
 
