@@ -130,14 +130,18 @@ class DataProcess:
         if specz is not None:
             
             print('Read in Spec-zs.')
+            specz = specz
             
             if specz_key is not None:
                 print('specz provided, override specz_key.')
-        else:
+        elif (specz_key is not None) & (specz is None):
             
             print('Read in Spec-zs from catalogue.')
             
             specz = self.catalogue_data[specz_key]
+
+        else:
+            specz = specz
             
         specz = self.to_float32(specz)
         
@@ -167,7 +171,9 @@ class DataProcess:
             fluxes = self.to_float32(fluxes)
             err_fluxes = self.to_float32(err_fluxes)
         else:
-            raise NotImplementedError
+            fluxes, err_fluxes = flux_data
+            fluxes = self.to_float32(fluxes)
+            err_fluxes = self.to_float32(err_fluxes)
             
         flux_data = self.flux_process(fluxes, err_fluxes)
         dim = flux_data.shape[-1]
@@ -315,7 +321,7 @@ class DataProcess:
                                             ))
         return ds
     
-    def load_images(self, images=None, imgnames=None, random_aug=False):
+    def load_images(self, images=None, imgnames=None):
         if images is not None:
             
             print('Read in image data.')
@@ -335,10 +341,15 @@ class DataProcess:
             datatype = {}
             datatype['imgnames'] = data
         else:
-            raise NotImplementedError
+            images = self.to_float32(images)
+            data = images
+            datatype = {}
+            datatype['images'] = data
         
         datasize = len(data)
         
+        random_aug = True if self.data_type == 'photometry_and_image' else False
+
         if not self.augmentation:
             ds_image = self.image_ds(**datatype)
             datasize = datasize
@@ -412,7 +423,10 @@ class DataProcess:
             datatype = {}
             datatype['imgnames'] = data
         else:
-            raise NotImplementedError
+            images = self.to_float32(images)
+            data = images
+            datatype = {}
+            datatype['images'] = data
         
         test_ds_image = self.image_ds(**datatype)
         self.test_ds_image = test_ds_image

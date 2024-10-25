@@ -25,7 +25,7 @@ if physical_devices:
     for device in visible_devices:
         tf.config.experimental.set_memory_growth(device, True)
         
-class PhotzEstimation:
+class PhotzEstimator:
     
     def __init__(self, model_type, data_type,
                  transfer=False, outDir='outputs'):
