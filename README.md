@@ -136,7 +136,7 @@ Perform training, model weights are saved in `outDir` when training finishes.
 ```Python
 estimator.evaluate(ds, ds_specz, n_runs=200)
 ```
-Perform evaluation, plot for results is saved in `outDir` when evaluation finishes.  
+Perform evaluation, plot for results and results file are saved in `outDir` when evaluation finishes.  
 `ds`: `tf.data.Dataset`: tf dataset for evaluation  
 `ds_specz`: `tf.data.Dataset`: tf dataset for spec-z for evaluation  
 `n_runs`: `int`: number of runs for `ds` to BNN model  
@@ -223,5 +223,5 @@ estimator = PhotzEstimator(model_type='BNN', data_type='image', transfer=False, 
 estimator.get_model(weights='Data/BNN/CNN_BNN_weights.h5', alpha_file='Data/BNN/alpha.json')
 
 estimator.inference(ds=tfds, datasize=datasize, catalogue=dataloader.catalogue_filename, info_keys=['ra', 'dec'], n_runs=200)
-```
+```  
 After running, a catalogue file `BNN_models/CNN/photoz_catalogue.fits` including `ra, dec, z_pred, z_err` will be created.
