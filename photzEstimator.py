@@ -141,6 +141,8 @@ class PhotzEstimator:
         if cbk is None:
             self.model.save_weights(model_filename)
         
+        self.model.load_weights(model_filename)
+        
         self.plot_his(his, self.data_dir)
         
     def plot_his(self, his, savedir):

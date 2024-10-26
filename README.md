@@ -1,5 +1,5 @@
 # CSST_photo_z_dl
-Public code for estimating photo-z by CNN and BNN for CSST
+Public code for estimating photo-z by NN and BNN for CSST
 
 For further details on methodologies and architectures, please consult our papers:
 
@@ -127,7 +127,7 @@ Get model
 ```Python
 estimator.train(train_ds, test_ds=None, learning_rate=2e-4, epochs=200)
 ```  
-Perform training, model weights are saved in `outDir` when training finishes.  
+Perform training, model weights file is saved in `outDir` when training finishes.  
 `train_ds`: `tf.data.Dataset`: training tf dataset loaded  
 `test_ds`: `tf.data.Dataset`: testing tf dataset loaded  
 `learning_rate`: `float`: learning_rate for Adam optimizer  
@@ -160,7 +160,7 @@ if `catalogue=None`, a catalogue of photo-z prediction will be created, otherwis
 from dataProcess import DataProcess
 from photzEstimator import PhotzEstimator
 
-dataloader = DataProcess(data_type, mode='train', augmentation=True, aug_n=50, batch_size=1024)
+dataloader = DataProcess(data_type='photometry_and_image', mode='train', augmentation=True, aug_n=50, batch_size=1024)
 dataloader.load_catalogue('catalogue_filename')
 
 bands = ['NUV', 'u', 'g', 'r', 'i', 'z', 'y']
@@ -202,11 +202,11 @@ estimator.train(train_dstfds, test_ds=test_tfds, learning_rate=2e-4, epochs=200)
 estimator.evaluate(test_tfds, test_tfds_specz, n_runs=200)
 ```  
 Data products:  
-weights file `BNN_models/Hybrid/Hybrid_weights.h5`  
-calibration parameter file `BNN_models/alpha.json`  
-figure `BNN_models/Hybrid/loss.png`  
-figure `BNN_models/Hybrid/acc.png`  
-figure `BNN_models/Hybrid/results.png`  
+weights file `outputs/BNN_models/Hybrid/Hybrid_weights.h5`  
+calibration parameter file `outputs/BNN_models/alpha.json`  
+figure `outputs/BNN_models/Hybrid/loss.png`  
+figure `outputs/BNN_models/Hybrid/acc.png`  
+figure `outputs/BNN_models/Hybrid/results.png`  
 
 2. If one wants to inference from image data using trained BNN model
 ```Python
@@ -230,4 +230,4 @@ estimator.get_model(weights='Data/BNN/CNN_BNN_weights.h5', alpha_file='Data/BNN/
 estimator.inference(ds=tfds, datasize=datasize, catalogue=dataloader.catalogue_filename, info_keys=['ra', 'dec'], n_runs=200)
 ```  
 Data products:  
-catalogue file `BNN_models/CNN/photoz_catalogue.fits` including `ra, dec, z_pred, z_err`  
+catalogue file `outputs/BNN_models/CNN/photoz_catalogue.fits` including `ra, dec, z_pred, z_err`  
