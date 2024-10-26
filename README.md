@@ -213,7 +213,7 @@ figure `outputs/BNN_models/Hybrid/results.png`
 from dataProcess import DataProcess
 from photzEstimator import PhotzEstimator
 
-dataloader = DataProcess(data_type, mode='inference', augmentation=True, aug_n=50, batch_size=1024)
+dataloader = DataProcess(data_type='image', mode='inference', batch_size=1024)
 dataloader.load_catalogue('catalogue_filename')
 
 imgnames = ['stamp_000.fits', 'stamp_001.fits', 'stamp_002.fits' '..']
